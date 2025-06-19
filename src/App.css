@@ -1,6 +1,7 @@
 #root {
   max-width: 1280px;
   margin: 0 auto;
+  top: 0px;
   padding: 2rem;
   text-align: center;
 }
@@ -39,4 +40,72 @@
 
 .read-the-docs {
   color: #888;
+}
+
+.menu-component {
+  display: flex;
+  justify-content: space-around;
+  background-color: orange;
+  border-radius: 10px 10px 0px 0px;
+  min-width: 950px
+}
+
+.msg-text {
+  color: rgb(192, 51, 51);
+  font-style: italic;
+}
+
+.link-menu {
+  font-size: 22px;
+  padding: 5px 10px;
+  color: black;
+  &:hover {
+    cursor: pointer;
+    color: blue;
+  }
+}
+
+.listado-container {
+  background-color: rgb(120, 139, 133);
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.title-listing {
+  font-style: italic;
+  color: darkgreen;
+  font-size: x-large;
+}
+
+.pokemon-list-data {
+  display: grid;
+  grid-template-columns: 2fr 10fr 2fr;
+  align-items: center;
+  padding: 10px;
+  border: 2px solid darkolivegreen;
+  border-radius: 10px;
+  background-color: rgb(170, 170, 132);
+  color: darkslateblue;
+}
+
+.photo-container {
+  max-width: 100px;
+}
+
+.info-container {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+}
+
+.btn-details {
+  background-color: rgb(163, 62, 25);
+
+  &:hover {
+    cursor: pointer;
+    background-color: rgb(214, 136, 136);
+    color: black;
+  }
 }

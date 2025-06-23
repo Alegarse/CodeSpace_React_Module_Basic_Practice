@@ -76,6 +76,7 @@ const PokemonListComponent = () => {
                 src={p.fav ? fTrue : fFalse}
                 onClick={() => changeFavouriteState(p._id, p.fav)}
                 className="img-fav"
+                title="Change favourite state"
               ></img>
 
               <button

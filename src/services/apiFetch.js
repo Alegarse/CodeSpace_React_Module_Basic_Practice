@@ -30,6 +30,7 @@ let pokemonsList = [
     },
 ]
 
+
 let favouritePokemons = []
 
 export const getAllPokemons = () => {
@@ -47,11 +48,26 @@ export const getPokemonDetails = (pokemonId) => {
 }
 
 export const deletePokemon = (pokemonId) => {
-    const pokemonListAux = pokemonsList.filter(p => p._id === pokemonId)
+    const pokemonListAux = pokemonsList.filter(p => p._id !== pokemonId)
     pokemonsList = pokemonListAux
+}
+
+export const modifyPokemon = (pokemonId, pokemonModified) => {
+    const auxList = favouritePokemons.filter(p => p._id !== pokemonId)
+    auxList.push(pokemonModified)
+    favouritePokemons = auxList
 }
 
 export const addPokemonToFavourites = (pokemonId) => {
     favouritePokemons.push(pokemonId)
+}
+
+export const createNewPokemon = (newPokemon) => {
+    const auxPokemon = {
+        ...newPokemon,
+        _id: uuidv4(),
+        type: newPokemon.type.split(",")
+    }
+    pokemonsList.push(auxPokemon)
 }
 

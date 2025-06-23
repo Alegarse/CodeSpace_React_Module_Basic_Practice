@@ -1,15 +1,22 @@
-import React from 'react'
-import MenuComponent from '../components/MenuComponent'
-
+import { Navigate, useNavigate } from "react-router";
+import PokemonComponent from "../components/PokemonComponent";
+import { createNewPokemon } from "../services/apiFetch";
 
 const CreatePage = () => {
+  
+  const navigate = useNavigate();
+
+  const createPokemonFetch = (newPokemon) => {
+    createNewPokemon(newPokemon);
+    navigate("/");
+  };
+
   return (
     <div>
-        <h2>Práctica básica ReactJS - Pokemons</h2>
-        <MenuComponent/>
-        CreatePage
+      <h2>Creación de nuevo Pokemon</h2>
+      <PokemonComponent savePokemon={createPokemonFetch} createMode />
     </div>
-  )
-}
+  );
+};
 
-export default CreatePage
+export default CreatePage;

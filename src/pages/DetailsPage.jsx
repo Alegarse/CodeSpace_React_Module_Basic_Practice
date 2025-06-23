@@ -1,33 +1,33 @@
-import React, { useState } from 'react'
-import { useLocation, useNavigate } from 'react-router';
-import PokemonComponent from '../components/PokemonComponent';
-import { deletePokemon, modifyPokemon } from '../services/apiFetch';
+import { useLocation, useNavigate } from "react-router";
+import PokemonComponent from "../components/PokemonComponent";
+import { deletePokemon } from "../services/apiFetch";
+import { useState } from "react";
 
 const DetailsPage = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
 
-  const navigate = useNavigate()
-
-  const [editedPokemon, setEditedPokemon ] = useState({})
+  const [pokemonData, setPokemonData] = useState(state.pokemonToShow);
 
   const delPokemon = (pokemonId) => {
-    deletePokemon(pokemonId)
-    navigate("/")
+    deletePokemon(pokemonId);
+    navigate("/");
+  };
 
+  const updatePokemon = (editedPokemon) => {
+    setPokemonData(editedPokemon)
   }
-
-  const editPokemon = (pokemonId, pokemonModified) => {
-    modifyPokemon(pokemonId,pokemonModified)
-  }
- 
-  const location = useLocation();
-  const { state } = location
-  const pokemonData = state.pokemonToShow
   return (
     <div>
-      <h2>Detalles del pokemon: {pokemonData.name}</h2>
-      <PokemonComponent pokemonData={pokemonData} delPokemon={() =>delPokemon(pokemonData._id)} modifyPokemon={() => editPokemon(pokemonData._id, editedPokemon)} />
+      <PokemonComponent
+        pokemonData={pokemonData}
+        delPokemon={() => delPokemon(pokemonData._id)}
+        updatePokemon={updatePokemon}
+        detailsMode
+      />
     </div>
-  )
-}
+  );
+};
 
-export default DetailsPage
+export default DetailsPage;

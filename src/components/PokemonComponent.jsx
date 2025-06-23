@@ -1,9 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { UNSAFE_decodeViaTurboStream } from "react-router";
 import { useNavigate } from "react-router";
+import { createNewPokemon, modifyPokemon } from "../services/apiFetch";
 
 const PokemonComponent = (props) => {
-  let { savePokemon, delPokemon, modifyPokemon, createMode, editMode, pokemonData } = props;
+  const { delPokemon, createMode, pokemonData, detailsMode, updatePokemon } = props;
   const [newPokemon, setNewPokemon] = useState({});
+  const [editedPokemon, setEditedPokemon] = useState({});
+  let [editMode, setEditMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -14,8 +18,30 @@ const PokemonComponent = (props) => {
     });
   };
 
+  const pokemonHandlerSave = (propName, propValue) => {
+    setEditedPokemon({
+      ...editedPokemon,
+      [propName]: propValue,
+    });
+  };
+
   const cancel = () => {
     navigate("/");
+  };
+
+  const savePokemon = (pokemonId, editedPokemon) => {
+    modifyPokemon(pokemonId, editedPokemon);
+    updatePokemon(editedPokemon)
+    changeEditMode();
+  };
+
+  const createPokemon = () => {
+    createNewPokemon(newPokemon)
+    cancel()
+  }
+
+  const changeEditMode = () => {
+    editMode ? setEditMode(false) : setEditMode(true);
   };
 
   const showError = (message) => {
@@ -49,19 +75,38 @@ const PokemonComponent = (props) => {
     if (isError) {
       showError(errorMessage);
     } else {
-      savePokemon(newPokemon);
+      createPokemon();
     }
   };
+
+  useEffect(() => {
+    if (!createMode && pokemonData) {
+      setEditedPokemon(pokemonData);
+    }
+  }, [createMode, pokemonData]);
 
   return (
     <div>
       <div className="data-create-container">
+        {editMode ? (
+          <h2>Edición del pokemon: {pokemonData.name}</h2>
+        ) : detailsMode ? (
+          <h2>Detalles del pokemon: {pokemonData.name}</h2>
+        ) : (
+          <h2>Creación de nuevo Pokemon</h2>
+        )}
         <div className="input-row">
           <span>Nombre: </span>
           {createMode ? (
             <input
               type="text"
               onChange={(p) => pokemonHandler("name", p.target.value)}
+            />
+          ) : editMode ? (
+            <input
+              type="text"
+              value={editedPokemon?.name}
+              onChange={(p) => pokemonHandlerSave("name", p.target.value)}
             />
           ) : (
             <span>{pokemonData?.name}</span>
@@ -74,6 +119,8 @@ const PokemonComponent = (props) => {
               type="text"
               onChange={(p) => pokemonHandler("url", p.target.value)}
             />
+          ) : editMode ? (
+            <input type="text" value={pokemonData?.url} disabled />
           ) : (
             <span>{pokemonData?.url}</span>
           )}
@@ -85,6 +132,8 @@ const PokemonComponent = (props) => {
               type="text"
               onChange={(p) => pokemonHandler("height", p.target.value)}
             />
+          ) : editMode ? (
+            <input type="text" value={pokemonData?.height} disabled />
           ) : (
             <span>{pokemonData?.height}</span>
           )}
@@ -96,6 +145,8 @@ const PokemonComponent = (props) => {
               type="text"
               onChange={(p) => pokemonHandler("weight", p.target.value)}
             />
+          ) : editMode ? (
+            <input type="text" value={pokemonData?.weight} disabled />
           ) : (
             <span>{pokemonData?.weight}</span>
           )}
@@ -107,13 +158,13 @@ const PokemonComponent = (props) => {
               type="text"
               onChange={(p) => pokemonHandler("type", p.target.value)}
             />
+          ) : editMode ? (
+            <input type="text" value={pokemonData?.type} disabled />
           ) : (
             <ul>
-              {
-                pokemonData.type.map((type, idx) => (
-                  <li key={idx}>{type}</li>
-                ))
-              }
+              {pokemonData.type.map((type, idx) => (
+                <li key={idx}>{type}</li>
+              ))}
             </ul>
           )}
         </div>
@@ -130,17 +181,33 @@ const PokemonComponent = (props) => {
           </button>
         ) : (
           <>
-          <button className="btn-delete" onClick={delPokemon}>
-            Eliminar
-          </button>
-          <button className="btn-modify" onClick={modifyPokemon}>
-            Modificar
-          </button>
+            {editMode ? (
+              <>
+                <button
+                  className="btn-save"
+                  onClick={() => savePokemon(pokemonData._id, editedPokemon)}
+                >
+                  Guardar
+                </button>
+                <button className="btn-cancel" onClick={changeEditMode}>
+                  Cancelar
+                </button>
+              </>
+            ) : (
+              <>
+                <button className="btn-delete" onClick={delPokemon}>
+                  Eliminar
+                </button>
+                <button className="btn-modify" onClick={changeEditMode}>
+                  Modificar
+                </button>
+                <button className="btn-cancel" onClick={cancel}>
+                  Cancelar
+                </button>
+              </>
+            )}
           </>
         )}
-        <button className="btn-cancel" onClick={cancel}>
-          Cancelar
-        </button>
       </div>
       <div className="error_message">\u200B</div>
     </div>

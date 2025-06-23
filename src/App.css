@@ -92,7 +92,7 @@ footer {
 
 .pokemon-list-data {
   display: grid;
-  grid-template-columns: 10fr 2fr;
+  grid-template-columns: 9fr 1fr 2fr;
   align-items: center;
   padding: 10px;
   border: 2px solid darkolivegreen;
@@ -121,6 +121,11 @@ footer {
   }
 }
 
+input {
+  width: 60%;
+  text-align: center;
+}
+
 .error_message {
   color: rgb(214, 67, 67);
   font-style: italic;
@@ -133,6 +138,23 @@ footer {
   flex-direction: column;
   align-items: center;
   gap: 5px;
+  border-right: 1px solid orange;
+  border-left: 1px solid orange;
+  border-bottom: 1px solid orange;
+  border-radius: 0px 0px 10px 10px;
+  padding-bottom: 20px;
+}
+
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  border-right: 1px solid orange;
+  border-left: 1px solid orange;
+  border-bottom: 1px solid orange;
+  border-radius: 0px 0px 10px 10px;
+  padding-bottom: 20px;
 }
 
 .buttons-create-container {
@@ -164,4 +186,17 @@ button {
 
 .btn-modify {
   background-color: rgb(157, 165, 43);
+}
+
+.btn-save {
+  background-color: green;
+}
+
+.btn-fav {
+  background-color: transparent;
+  color: black;
+}
+
+.img-fav {
+  cursor: pointer;
 }

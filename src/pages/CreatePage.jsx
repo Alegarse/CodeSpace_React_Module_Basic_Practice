@@ -13,7 +13,6 @@ const CreatePage = () => {
 
   return (
     <div>
-      <h2>Creación de nuevo Pokemon</h2>
       <PokemonComponent savePokemon={createPokemonFetch} createMode />
     </div>
   );

@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { getAllPokemons, getPokemonDetails } from "../services/apiFetch";
+import {
+  addPokemonToFavourites,
+  getAllPokemons,
+  getPokemonDetails,
+  removePokemonFromFavourites,
+} from "../services/apiFetch";
 import { useNavigate } from "react-router";
+import fTrue from "../imgs/f_true.png";
+import fFalse from "../imgs/f_false.png";
 
 const PokemonListComponent = () => {
   const [pokemonsList, setPokemonsList] = useState(undefined);
@@ -19,6 +26,14 @@ const PokemonListComponent = () => {
         pokemonToShow,
       },
     });
+  };
+
+  const changeFavouriteState = (pokemonId, stateFav) => {
+    stateFav
+      ? removePokemonFromFavourites(pokemonId)
+      : addPokemonToFavourites(pokemonId),
+      loadData();
+    loadData();
   };
 
   useEffect(() => {
@@ -56,6 +71,13 @@ const PokemonListComponent = () => {
                   {p.url}
                 </span>
               </div>
+
+              <img
+                src={p.fav ? fTrue : fFalse}
+                onClick={() => changeFavouriteState(p._id, p.fav)}
+                className="img-fav"
+              ></img>
+
               <button
                 className="btn-details"
                 onClick={() => showPokemonDetails(p._id)}

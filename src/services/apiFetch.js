@@ -8,7 +8,8 @@ let pokemonsList = [
         height: 3,
         weight: 40,
         type: ["normal"],
-        imgUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/132.png" 
+        imgUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/132.png",
+        fav: false 
     },
     {
         _id: uuidv4(),
@@ -17,7 +18,8 @@ let pokemonsList = [
         height: 4,
         weight: 60,
         type: ["Electric"],
-        imgUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png" 
+        imgUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/25.png",
+        fav: false 
     },
     {
         _id: uuidv4(),
@@ -26,19 +28,18 @@ let pokemonsList = [
         height: 17,
         weight: 905,
         type: ["fire", "flying"],
-        imgUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/6.png" 
+        imgUrl: "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/back/6.png",
+        fav: false 
     },
 ]
-
-
-let favouritePokemons = []
 
 export const getAllPokemons = () => {
     return pokemonsList.map(p => {
         return {
             _id: p._id,
             name: p.name,
-            url: p.url
+            url: p.url,
+            fav: p.fav
         }
     })
 }
@@ -53,19 +54,28 @@ export const deletePokemon = (pokemonId) => {
 }
 
 export const modifyPokemon = (pokemonId, pokemonModified) => {
-    const auxList = favouritePokemons.filter(p => p._id !== pokemonId)
+    const auxList = pokemonsList.filter(p => p._id !== pokemonId)
     auxList.push(pokemonModified)
-    favouritePokemons = auxList
+    pokemonsList = auxList
 }
 
 export const addPokemonToFavourites = (pokemonId) => {
-    favouritePokemons.push(pokemonId)
+    pokemonsList = pokemonsList.map(p => 
+        p._id === pokemonId ? {...p, fav:true} : p
+    )
+}
+
+export const removePokemonFromFavourites = (pokemonId) => {
+    pokemonsList = pokemonsList.map(p => 
+        p._id === pokemonId ? {...p, fav:false} : p
+    )
 }
 
 export const createNewPokemon = (newPokemon) => {
     const auxPokemon = {
         ...newPokemon,
         _id: uuidv4(),
+        fav: false,
         type: newPokemon.type.split(",")
     }
     pokemonsList.push(auxPokemon)
